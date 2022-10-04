@@ -77,6 +77,12 @@ const getDataOpject = async ()=>{
 
 }
 
+const dynamicUpdate = (data)=>{
+    document.getElementById('temp').innerHTML = Math.round(data.temperature)+ ' degrees';
+    document.getElementById('content').innerHTML = data.content;
+    document.getElementById("date").innerHTML =data.date;
+}
+
 const performAction =async ()=>{
     const zipCode = document.getElementById("zip").value;
     content = document.getElementById("feelings").value;
@@ -101,7 +107,14 @@ const performAction =async ()=>{
         })
         .then(
             getDataOpject()
+            .then((data)=>{
+                console.log("dataaaaaaa "+JSON.stringify(data))
+                dynamicUpdate(data)
+    
+            }
+            )
         )
+        
     })
     
     
