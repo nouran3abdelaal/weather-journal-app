@@ -17,6 +17,18 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static('website'));
 
+//GET Route I: Server Side
+app.get("/getProjectData",(req,res)=>{
+res.send(projectData);
+})
+
+//POST Route
+app.post("/postProjectData", (req,res)=>{
+     projectData = {"date":req.body.date,"content":req.body.content,"temperature":req.body.temperature};
+     console.log("post data "+  JSON.stringify(projectData))
+    res.end()
+})
+
 // Setup Server
 const PORT = 5000;
 app.listen(PORT,()=>{
