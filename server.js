@@ -19,6 +19,13 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static('website'));
 
+require('dotenv').config()
+const path = require("path")
+const filePath = path.resolve(process.cwd() + "/config/.env") // cwd: stands for current working directory
+require('dotenv').config({
+    path: filePath
+}) // to use that file 
+
 //GET Route I: Server Side
 app.get("/getProjectData", (req, res) => {
     console.log(projectData)
@@ -35,6 +42,10 @@ app.post("/postProjectData", (req, res) => {
     };
     console.log("post data " + JSON.stringify(projectData))
     res.end()
+})
+
+app.get("/apiKey", (req, res) => {
+    res.send(process.env.APIKey);
 })
 
 // Setup Server

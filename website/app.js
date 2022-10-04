@@ -1,5 +1,5 @@
 /* Global Variables */
-const apiKey = 'b4c0410797703defa52994dd9b7563a3&units=imperial';
+let apiKey;
 const baseURL = "https://api.openweathermap.org/data/2.5/weather?";
 //http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}
 let fullURL_Zip;
@@ -10,6 +10,15 @@ let content;
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = (d.getMonth() + 1) + '.' + d.getDate() + '.' + d.getFullYear();
+
+const getKey = async () => {
+    const res = await fetch("apiKey");
+    apiKey = await res.text();
+    console.log(JSON.stringify(apiKey))
+
+}
+
+
 
 //GET Route II: Client Side
 const getLatLon = async () => {
@@ -37,7 +46,7 @@ const getLatLon = async () => {
 
 const getWeather = async () => {
     console.log(lat + " ", lon)
-    const res = await fetch(baseURL + "lat=" + lat + "&lon=" + lon + "&appid=" + apiKey)
+    const res = await fetch(baseURL + "lat=" + lat + "&lon=" + lon + "&appid=" + apiKey + "&units=imperia")
     console.log(res)
     try {
         const weather = await res.json();
@@ -82,44 +91,49 @@ const dynamicUpdate = (data) => {
 }
 
 const performAction = async () => {
-    const zipCode = document.getElementById("zip").value;
-    content = document.getElementById("feelings").value;
-    if (!zipCode) {
-        alert("Please Enter a Zip code");
-        return;
-    }
-    fullURL_Zip = `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode}&appid=b4c0410797703defa52994dd9b7563a3`;
-    getLatLon()
-        .then(() => {
-            getWeather()
-                .then((data) => {
-                    temperature = data.main.temp
-                    console.log("temperature is: " + temperature)
-
-                })
-                .then(() => {
-                    postData()
-                        .catch(err => {
-                            console.log("error happened  " + err);
-                        })
-                })
-                .then(
-                    getDataOpject()
+    getKey().then(() => {
+        const zipCode = document.getElementById("zip").value;
+        content = document.getElementById("feelings").value;
+        if (!zipCode) {
+            alert("Please Enter a Zip code");
+            return;
+        }
+        fullURL_Zip = `http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode}&appid=${apiKey}`;
+        getLatLon()
+            .then(() => {
+                getWeather()
                     .then((data) => {
-                        console.log("dataaaaaaa " + JSON.stringify(data))
-                        dynamicUpdate(data)
+                        temperature = data.main.temp
+                        console.log("temperature is: " + temperature)
 
                     })
-                )
+                    .then(() => {
+                        postData()
+                            .then(
+                                getDataOpject()
+                                .then((data) => {
+                                    console.log("dataaaaaaa " + JSON.stringify(data))
+                                    dynamicUpdate(data)
 
-        })
+                                })
+                            )
+
+                            .catch(err => {
+                                console.log("error happened  " + err);
+                            })
+                    })
 
 
-        .catch(err => {
-            console.log("error happened  " + err);
-        })
-    //console.log("whather>>>>>> "+getWeather(baseURL));
+            })
 
+
+            .catch(err => {
+                console.log("error happened  " + err);
+            })
+        //console.log("whather>>>>>> "+getWeather(baseURL));
+
+
+    })
 
 }
 
