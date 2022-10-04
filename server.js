@@ -8,7 +8,9 @@ const app = express();
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(bodyParser.json());
 
 // Cors for cross origin allowance
@@ -18,21 +20,25 @@ app.use(cors());
 app.use(express.static('website'));
 
 //GET Route I: Server Side
-app.get("/getProjectData",(req,res)=>{
+app.get("/getProjectData", (req, res) => {
     console.log(projectData)
     res.send(projectData);
 })
 
 //POST Route
-app.post("/postProjectData", (req,res)=>{
-   // projectData = {... req.body}
-    projectData = {"date":req.body.date,"content":req.body.content,"temperature":req.body.temperature};
-     console.log("post data "+  JSON.stringify(projectData))
+app.post("/postProjectData", (req, res) => {
+    // projectData = {... req.body}
+    projectData = {
+        "date": req.body.date,
+        "content": req.body.content,
+        "temperature": req.body.temperature
+    };
+    console.log("post data " + JSON.stringify(projectData))
     res.end()
 })
 
 // Setup Server
 const PORT = 5000;
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log(`The server is listening on port ${PORT}`)
 })
