@@ -6,12 +6,16 @@ const express = require('express');
 // Start up an instance of app
 const app = express();
 
-require('dotenv').config()
-const path = require("path")
-const filePath = path.resolve(process.cwd() + "/config/.env") // cwd: stands for current working directory
-require('dotenv').config({
-    path: filePath
-}) // to use that file 
+// require('dotenv').config()
+// const path = require("path")
+// const filePath = path.resolve(process.cwd() + "/config/.env") // cwd: stands for current working directory
+// require('dotenv').config({
+//     path: filePath
+// }) // to use that file 
+const dotenv = require("dotenv");
+const path = require("path");
+const filePath = path.resolve(process.cwd+"/config/.env");
+dotenv.config({path: filePath})
 
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
