@@ -5,6 +5,14 @@ let projectData = {};
 const express = require('express');
 // Start up an instance of app
 const app = express();
+
+require('dotenv').config()
+const path = require("path")
+const filePath = path.resolve(process.cwd() + "/config/.env") // cwd: stands for current working directory
+require('dotenv').config({
+    path: filePath
+}) // to use that file 
+
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
 const bodyParser = require("body-parser");
@@ -19,12 +27,6 @@ app.use(cors());
 // Initialize the main project folder
 app.use(express.static('website'));
 
-require('dotenv').config()
-const path = require("path")
-const filePath = path.resolve(process.cwd() + "/config/.env") // cwd: stands for current working directory
-require('dotenv').config({
-    path: filePath
-}) // to use that file 
 
 //GET Route I: Server Side
 app.get("/getProjectData", (req, res) => {
